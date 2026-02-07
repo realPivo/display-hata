@@ -1,20 +1,30 @@
 {
   "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava"],
+  "date": {
+    "duration": 5
+  },
   "weather": {
     "lat": 58.38017374044505,
-    "lon": 26.722616617007585
+    "lon": 26.722616617007585,
+    "duration": 5
   },
   "smart_bikes": {
-    "station": "Raatuse"
+    "station": "Raatuse",
+    "duration": 5
   },
   "adsb": {
     "city": "Tartu",
     "lat": 58.38017374044505,
     "lon": 26.722616617007585,
-    "radius_km": 50
+    "radius_km": 50,
+    "duration": 5
+  },
+  "cpu": {
+    "duration": 5
   },
   "strava": {
     "goal_km": 1000,
-    "period": "ytd"
+    "period": "ytd",
+    "duration": 5
   }
 }

@@ -25,4 +25,6 @@ all_screens = []
 for name in _config["screens"]:
     factory = _SCREEN_FACTORIES[name]
     screen_cfg = _config.get(name, {})
-    all_screens.append(factory(screen_cfg))
+    screen = factory(screen_cfg)
+    screen.interval = screen_cfg.get("duration", 5)
+    all_screens.append(screen)

@@ -49,6 +49,8 @@ cp config.example.json config.json
 | `adsb`        | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50). |
 | `strava`      | object   | `goal_km` (default 1000) and `period` (`ytd`, `all`, or `recent`).           |
 
+Every screen section accepts an optional `duration` (number) — seconds the screen stays visible before cycling to the next one. Defaults to 5.
+
 Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`.
 Screens without config (`date`, `cpu`) don't need a config section.
 
@@ -57,22 +59,32 @@ Example:
 ```json
 {
   "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava"],
+  "date": {
+    "duration": 5
+  },
   "weather": {
     "lat": 58.38,
-    "lon": 26.72
+    "lon": 26.72,
+    "duration": 5
   },
   "smart_bikes": {
-    "station": "Raatuse"
+    "station": "Raatuse",
+    "duration": 5
   },
   "adsb": {
     "city": "Tartu",
     "lat": 58.38,
     "lon": 26.72,
-    "radius_km": 50
+    "radius_km": 50,
+    "duration": 5
+  },
+  "cpu": {
+    "duration": 5
   },
   "strava": {
     "goal_km": 1000,
-    "period": "ytd"
+    "period": "ytd",
+    "duration": 5
   }
 }
 ```
