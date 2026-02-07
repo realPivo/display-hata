@@ -52,6 +52,7 @@ class WeatherScreen(Screen):
         self.lat = lat
         self.lon = lon
         self.font = load_font("FreePixel.ttf", 16)
+        self.font_sm = load_font("FreePixel.ttf", 12)
         self.weather: dict | None = None
 
     def prefetch(self):
@@ -71,7 +72,15 @@ class WeatherScreen(Screen):
             ]
 
         spacing = 4
-        bboxes = [draw.textbbox((0, 0), line, font=self.font) for line in lines]
+        fonts = []
+        for line in lines:
+            bbox = draw.textbbox((0, 0), line, font=self.font)
+            if bbox[2] - bbox[0] <= width:
+                fonts.append(self.font)
+            else:
+                fonts.append(self.font_sm)
+
+        bboxes = [draw.textbbox((0, 0), line, font=fonts[i]) for i, line in enumerate(lines)]
         heights = [b[3] - b[1] for b in bboxes]
         widths = [b[2] - b[0] for b in bboxes]
 
@@ -83,6 +92,6 @@ class WeatherScreen(Screen):
                 ((width - widths[i]) // 2, y),
                 line,
                 fill="white",
-                font=self.font,
+                font=fonts[i],
             )
             y += heights[i] + spacing
