@@ -10,10 +10,19 @@ from screens import all_screens
 
 def main():
     parser = argparse.ArgumentParser(description="display-hata OLED screen cycler")
-    parser.add_argument("--emulator", action="store_true", help="Use pygame emulator instead of real hardware")
+    parser.add_argument(
+        "--emulator",
+        action="store_true",
+        help="Use pygame emulator instead of real hardware",
+    )
+    parser.add_argument(
+        "--gif",
+        type=str,
+        help="Save animation to a GIF file (e.g., output.gif). Overrides --emulator.",
+    )
     args = parser.parse_args()
 
-    device = create_device(emulator=args.emulator)
+    device = create_device(emulator=args.emulator, gif_file=args.gif)
 
     try:
         all_screens[0].prefetch()
@@ -22,7 +31,9 @@ def main():
             for i, screen in enumerate(all_screens):
                 # Prefetch the next screen's data while this one is displayed.
                 next_screen = all_screens[(i + 1) % len(all_screens)]
-                prefetch_thread = threading.Thread(target=next_screen.prefetch, daemon=True)
+                prefetch_thread = threading.Thread(
+                    target=next_screen.prefetch, daemon=True
+                )
                 prefetch_thread.start()
 
                 if screen.live:

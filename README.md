@@ -2,6 +2,8 @@
 
 **display-hata** is a collection Python scripts for Raspberry Pi Zero 2W, that drives an SH1106 OLED display (128x64, blue) to cycle through information screens. Uses `luma.oled` for hardware rendering and `luma.emulator` (pygame) for local development.
 
+![Example GIF](./example.gif)
+
 ## Hardware
 
 - **Board:** Raspberry Pi Zero 2W
@@ -11,7 +13,7 @@
 
 ## Architecture
 
-- **Device layer** — factory that returns either a real `luma.oled.device.sh1106` or a `luma.emulator.device.pygame` device based on environment, e.g. `uv run main.py --emulator`
+- **Device layer** — factory that returns either a real `luma.oled.device.sh1106` or a `luma.emulator.device.pygame` device based on environment, e.g. `uv run main.py --emulator`. Use ` run main.py --gif filename.gif` to save screens to GIF. Press `Ctrl+C` to stop and save.
 - **Screen abstraction** — each screen extends `Screen` (in `screens/base.py`) and implements `draw()`. Screens have three key properties:
   - `interval: float` — many seconds this screen stays visible before the loop moves to the next one.
   - `live: bool = False` — when `True`, the screen redraws continuously every 0.5s for its interval (e.g. ticking clock). When `False`, it draws once and sleeps.
