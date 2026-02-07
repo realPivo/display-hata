@@ -1,5 +1,6 @@
 {
   "current_city": "Tartu",
+  "smart_bikes_station": "Raatuse",
   "cities": {
     "Tartu": [58.38017374044505, 26.722616617007585],
     "Riga": [56.920616173038674, 23.972677707170096],

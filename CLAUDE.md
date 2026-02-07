@@ -30,13 +30,13 @@ uv add <package>         # add a dependency
 - `luma.emulator` — pygame-based emulator for development
 - `pillow` — image/font rendering (pulled in by luma)
 - `psutil` — CPU usage and system metrics
-- `httpx` — HTTP client for external API calls (smart bikes)
+- `httpx` — HTTP client for external API calls (weather, smart bikes, ADS-B)
 
 ## Architecture
 
 The app follows a **screen-based architecture**:
 
-- **Device layer** — factory that returns either a real `luma.oled.device.sh1106` or a `luma.emulator.device.pygame` device based on environment
+- **Device layer** — factory in `device.py` that returns a real `luma.oled.device.sh1106`, a `luma.emulator.device.pygame`, or a `luma.emulator.device.gifanim` device based on CLI flags and environment
 - **Screen abstraction** — each screen extends `Screen` (in `screens/base.py`) and implements `draw()`. Screens have two key flags:
   - `live: bool = False` — when `True`, the screen redraws continuously every 0.5s for its interval (e.g. ticking clock). When `False`, it draws once and sleeps.
   - `prefetch()` — optional hook called in a background thread while the *previous* screen is displayed, so slow I/O (HTTP requests) completes before the screen is drawn.
@@ -44,25 +44,38 @@ The app follows a **screen-based architecture**:
 
 ### Screens
 
-| Screen        | `live` | `prefetch` | Description                                      |
-|---------------|--------|------------|--------------------------------------------------|
-| `date`        | yes    | no         | Current date and time (ticking seconds)          |
-| `cpu`         | no     | no         | CPU usage percentage                             |
-| `smart_bikes` | no     | yes        | Bike availability at a Tartu Smart Bike station  |
+| Screen        | `live` | `prefetch` | Description                                          |
+|---------------|--------|------------|------------------------------------------------------|
+| `date`        | yes    | no         | Current date and time (ticking seconds)              |
+| `weather`     | no     | yes        | Temperature and condition via Open-Meteo API         |
+| `smart_bikes` | no     | yes        | Bike availability at a configured Smart Bike station |
+| `adsb`        | no     | yes        | Aircraft count within 50 km via adsb.lol / adsb.fi   |
+| `cpu`         | no     | no         | CPU usage percentage                                 |
 
 ### Display Coordinates
 
 The SH1106 is 128x64 pixels. Origin (0, 0) is top-left. Use `luma.core.render.canvas` context manager for drawing — it handles double-buffering and flush.
 
+## Configuration
+
+The app reads `config.json` at startup (see `config.example.json` for reference). Fields:
+
+- `current_city` — name of the active city (must be a key in `cities`)
+- `smart_bikes_station` — Tartu Smart Bike station name (e.g. `"Pargi"`)
+- `cities` — map of city names to `[latitude, longitude]` pairs
+
+`current_city` determines the location used by the `weather` and `adsb` screens. `smart_bikes_station` sets which station the `smart_bikes` screen queries.
+
 ## Development vs Production
 
-The device is selected at startup:
+The device is selected at startup via CLI flags:
 
-- **Dev (default on non-Pi):** `luma.emulator.device.pygame` — opens a pygame window simulating 128x64
-- **Production (on Pi):** `luma.oled.device.sh1106` via I2C (`port=1, address=0x3C`)
+- **`--emulator`** (or auto-detected non-Pi): `luma.emulator.device.pygame` — opens a pygame window simulating 128x64
+- **`--gif <file>`**: `luma.emulator.device.gifanim` — records frames to a GIF file (Ctrl+C to stop and save)
+- **Production (on Pi, no flags):** `luma.oled.device.sh1106` via I2C (`port=1, address=0x3C`)
 
 ## Conventions
 
 - Python 3.13+
 - All rendering uses Pillow's `ImageDraw` through `luma.core.render.canvas`
-- Fonts: use Pillow's built-in `ImageFont.load_default()` or bundle .ttf files in a `fonts/` directory
+- Fonts: `FreePixel.ttf` bundled in `fonts/`; load via `load_font()` helper in `screens/base.py`

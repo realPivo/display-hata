@@ -13,11 +13,12 @@ with open(_config_path) as f:
 
 CITIES = {name: tuple(coords) for name, coords in _config["cities"].items()}
 CURRENT_CITY = _config["current_city"]
+SMART_BIKES_STATION = _config["smart_bikes_station"]
 
 all_screens = [
     DateScreen(),
     WeatherScreen(lat=CITIES[CURRENT_CITY][0], lon=CITIES[CURRENT_CITY][1]),
-    SmartBikesScreen("Pargi"),
+    SmartBikesScreen(SMART_BIKES_STATION),
     AdsbScreen(
         city=CURRENT_CITY, lat=CITIES[CURRENT_CITY][0], lon=CITIES[CURRENT_CITY][1]
     ),
