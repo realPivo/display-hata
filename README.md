@@ -29,6 +29,7 @@
 | `smart_bikes` | Bike availability at a configured Smart Bike station |
 | `adsb`        | Aircraft count within 50 km via adsb.lol / adsb.fi   |
 | `cpu`         | CPU usage percentage                                 |
+| `strava`      | Cycling distance and goal progress via Strava API    |
 
 ## Configuration
 
@@ -40,21 +41,22 @@ cp config.example.json config.json
 
 `config.json` fields:
 
-| Field          | Type     | Description                                                                 |
-| -------------- | -------- | --------------------------------------------------------------------------- |
-| `screens`      | string[] | Ordered list of screens to display. Only listed screens are shown.          |
-| `weather`      | object   | `lat` and `lon` for the weather screen.                                     |
-| `smart_bikes`  | object   | `station` — Tartu Smart Bike station name.                                  |
-| `adsb`         | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50).|
+| Field         | Type     | Description                                                                  |
+| ------------- | -------- | ---------------------------------------------------------------------------- |
+| `screens`     | string[] | Ordered list of screens to display. Only listed screens are shown.           |
+| `weather`     | object   | `lat` and `lon` for the weather screen.                                      |
+| `smart_bikes` | object   | `station` — Tartu Smart Bike station name.                                   |
+| `adsb`        | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50). |
+| `strava`      | object   | `goal_km` (default 1000) and `period` (`ytd`, `all`, or `recent`).           |
 
-Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`.
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`.
 Screens without config (`date`, `cpu`) don't need a config section.
 
 Example:
 
 ```json
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava"],
   "weather": {
     "lat": 58.38,
     "lon": 26.72
@@ -67,20 +69,40 @@ Example:
     "lat": 58.38,
     "lon": 26.72,
     "radius_km": 50
+  },
+  "strava": {
+    "goal_km": 1000,
+    "period": "ytd"
   }
 }
 ```
+
+## Strava Setup
+
+The `strava` screen requires OAuth2 credentials. One-time setup:
+
+1. Create a Strava API application at https://www.strava.com/settings/api
+2. Set the **Authorization Callback Domain** to `localhost`
+3. Run the helper script and follow the prompts:
+
+```bash
+uv run strava_auth.py
+```
+
+4. Copy the output into a `.env` file in the project root (see `.env.example`)
+
+The app automatically refreshes access tokens (they expire every 6 hours) and caches them in `.strava_cache.json`. Both `.env` and `.strava_cache.json` are git-ignored.
 
 ## Usage
 
 ```bash
 uv sync                              # install dependencies
-uv run python main.py --emulator     # run with pygame emulator
-uv run python main.py --gif out.gif  # record to GIF (Ctrl+C to save)
+uv run main.py --emulator     # run with pygame emulator
+uv run main.py --gif out.gif  # record to GIF (Ctrl+C to save)
 ```
 
 On a Raspberry Pi, run without flags to use the real SH1106 display:
 
 ```bash
-uv run python main.py
+uv run main.py
 ```

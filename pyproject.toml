@@ -9,4 +9,5 @@ dependencies = [
     "luma.emulator",
     "psutil",
     "httpx>=0.28.1",
+    "python-dotenv",
 ]

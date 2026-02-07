@@ -11,3 +11,9 @@ wheels/
 
 # Config with sensitive data
 config.json
+
+# Environment variables (secrets)
+.env
+
+# Strava OAuth token cache
+.strava_cache.json

@@ -30,7 +30,8 @@ uv add <package>         # add a dependency
 - `luma.emulator` — pygame-based emulator for development
 - `pillow` — image/font rendering (pulled in by luma)
 - `psutil` — CPU usage and system metrics
-- `httpx` — HTTP client for external API calls (weather, smart bikes, ADS-B)
+- `httpx` — HTTP client for external API calls (weather, smart bikes, ADS-B, Strava)
+- `python-dotenv` — loads `.env` file for Strava credentials
 
 ## Architecture
 
@@ -51,6 +52,7 @@ The app follows a **screen-based architecture**:
 | `smart_bikes` | no     | yes        | Bike availability at a configured Smart Bike station |
 | `adsb`        | no     | yes        | Aircraft count within 50 km via adsb.lol / adsb.fi   |
 | `cpu`         | no     | no         | CPU usage percentage                                 |
+| `strava`      | no     | yes        | Cycling distance and goal progress via Strava API    |
 
 ### Display Coordinates
 
@@ -65,6 +67,8 @@ The app reads `config.json` at startup (see `config.example.json` for reference)
 - `cities` — map of city names to `[latitude, longitude]` pairs
 
 `current_city` determines the location used by the `weather` and `adsb` screens. `smart_bikes_station` sets which station the `smart_bikes` screen queries.
+
+The `strava` screen reads OAuth2 credentials from a `.env` file (see `.env.example`). Mutable tokens are cached in `.strava_cache.json` (git-ignored). Run `uv run python strava_auth.py` for initial setup.
 
 ## Development vs Production
 

@@ -1,5 +1,5 @@
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava"],
   "weather": {
     "lat": 58.38017374044505,
     "lon": 26.722616617007585
@@ -12,5 +12,9 @@
     "lat": 58.38017374044505,
     "lon": 26.722616617007585,
     "radius_km": 50
+  },
+  "strava": {
+    "goal_km": 1000,
+    "period": "ytd"
   }
 }
