@@ -40,21 +40,33 @@ cp config.example.json config.json
 
 `config.json` fields:
 
-| Field                 | Type   | Description                                                                             |
-| --------------------- | ------ | --------------------------------------------------------------------------------------- |
-| `current_city`        | string | Active city name — must be a key in `cities`. Used by the weather and aircraft screens. |
-| `smart_bikes_station` | string | Tartu Smart Bike station name (e.g. `"Raatuse"`).                                       |
-| `cities`              | object | Map of city names to `[latitude, longitude]` coordinate pairs.                          |
+| Field          | Type     | Description                                                                 |
+| -------------- | -------- | --------------------------------------------------------------------------- |
+| `screens`      | string[] | Ordered list of screens to display. Only listed screens are shown.          |
+| `weather`      | object   | `lat` and `lon` for the weather screen.                                     |
+| `smart_bikes`  | object   | `station` — Tartu Smart Bike station name.                                  |
+| `adsb`         | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50).|
+
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`.
+Screens without config (`date`, `cpu`) don't need a config section.
 
 Example:
 
 ```json
 {
-  "current_city": "Tartu",
-  "smart_bikes_station": "Raatuse",
-  "cities": {
-    "Tartu": [58.38, 26.72],
-    "Tallinn": [59.41, 24.83]
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu"],
+  "weather": {
+    "lat": 58.38,
+    "lon": 26.72
+  },
+  "smart_bikes": {
+    "station": "Raatuse"
+  },
+  "adsb": {
+    "city": "Tartu",
+    "lat": 58.38,
+    "lon": 26.72,
+    "radius_km": 50
   }
 }
 ```

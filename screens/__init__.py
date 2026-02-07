@@ -11,16 +11,16 @@ _config_path = Path(__file__).resolve().parent.parent / "config.json"
 with open(_config_path) as f:
     _config = json.load(f)
 
-CITIES = {name: tuple(coords) for name, coords in _config["cities"].items()}
-CURRENT_CITY = _config["current_city"]
-SMART_BIKES_STATION = _config["smart_bikes_station"]
+_SCREEN_FACTORIES = {
+    "date": lambda cfg: DateScreen(),
+    "weather": lambda cfg: WeatherScreen(lat=cfg["lat"], lon=cfg["lon"]),
+    "smart_bikes": lambda cfg: SmartBikesScreen(cfg["station"]),
+    "adsb": lambda cfg: AdsbScreen(city=cfg["city"], lat=cfg["lat"], lon=cfg["lon"], radius_km=cfg.get("radius_km", 50)),
+    "cpu": lambda cfg: CpuScreen(),
+}
 
-all_screens = [
-    DateScreen(),
-    WeatherScreen(lat=CITIES[CURRENT_CITY][0], lon=CITIES[CURRENT_CITY][1]),
-    SmartBikesScreen(SMART_BIKES_STATION),
-    AdsbScreen(
-        city=CURRENT_CITY, lat=CITIES[CURRENT_CITY][0], lon=CITIES[CURRENT_CITY][1]
-    ),
-    CpuScreen(),
-]
+all_screens = []
+for name in _config["screens"]:
+    factory = _SCREEN_FACTORIES[name]
+    screen_cfg = _config.get(name, {})
+    all_screens.append(factory(screen_cfg))

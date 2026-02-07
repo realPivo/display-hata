@@ -1,11 +1,16 @@
 {
-  "current_city": "Tartu",
-  "smart_bikes_station": "Raatuse",
-  "cities": {
-    "Tartu": [58.38017374044505, 26.722616617007585],
-    "Riga": [56.920616173038674, 23.972677707170096],
-    "Tallinn": [59.41461736825938, 24.832537014470166],
-    "Helsinki": [60.31720827767394, 24.953772659747145],
-    "Heathrow": [51.47, -0.4543]
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu"],
+  "weather": {
+    "lat": 58.38017374044505,
+    "lon": 26.722616617007585
+  },
+  "smart_bikes": {
+    "station": "Raatuse"
+  },
+  "adsb": {
+    "city": "Tartu",
+    "lat": 58.38017374044505,
+    "lon": 26.722616617007585,
+    "radius_km": 50
   }
 }
