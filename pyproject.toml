@@ -1,0 +1,12 @@
+[project]
+name = "display-hata"
+version = "1.0.0"
+description = "Little ambient info panel on Raspberry Pi"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "luma.oled",
+    "luma.emulator",
+    "psutil",
+    "httpx>=0.28.1",
+]
