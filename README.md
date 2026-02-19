@@ -8,7 +8,7 @@
 
 - **Board:** Raspberry Pi Zero 2W
 - **Display:** SH1106 OLED, 128x64 resolution, blue
-- **Interface:** I2C (primary), also supports SPI
+- **Interface:** SPI (SCLK→P11, MOSI→P10, DC→P24, CS→P8/CE0, RST→P25)
 - **Dev mode:** `luma.emulator` with pygame (no physical hardware needed)
 
 ## Architecture
@@ -98,7 +98,7 @@ piwheels provides pre-built ARM wheels so Pillow and other compiled packages ins
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install --extra-index-url https://www.piwheels.org/simple -r requirements.txt
+pip install --prefer-binary --extra-index-url https://www.piwheels.org/simple -r requirements.txt
 ```
 
 ### On a desktop / laptop (development)

@@ -11,10 +11,10 @@ def create_device(emulator=False, gif_file=None):
         return pygame(width=128, height=64, mode="1")
 
     else:
-        from luma.core.interface.serial import i2c
+        from luma.core.interface.serial import spi
         from luma.oled.device import sh1106
 
-        serial = i2c(port=1, address=0x3C)
+        serial = spi(port=0, device=0, gpio_DC=24, gpio_RST=25)
         return sh1106(serial)
 
 
