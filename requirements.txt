@@ -1,4 +1,6 @@
 luma.oled
+RPi.GPIO
+spidev
 psutil
 httpx>=0.28.1
 python-dotenv
