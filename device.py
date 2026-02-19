@@ -15,7 +15,7 @@ def create_device(emulator=False, gif_file=None):
         from luma.oled.device import sh1106
 
         serial = spi(port=0, device=0, gpio_DC=24, gpio_RST=25)
-        return sh1106(serial)
+        return sh1106(serial, rotate=2)
 
 
 def _is_raspberry_pi():
