@@ -6,8 +6,12 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "luma.oled",
-    "luma.emulator",
     "psutil",
     "httpx>=0.28.1",
     "python-dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+    "luma.emulator",
 ]
