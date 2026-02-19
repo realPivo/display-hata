@@ -9,6 +9,8 @@ dependencies = [
     "psutil",
     "httpx>=0.28.1",
     "python-dotenv",
+    "RPi.GPIO; platform_machine == 'aarch64' or platform_machine == 'armv6l' or platform_machine == 'armv7l'",
+    "spidev; platform_machine == 'aarch64' or platform_machine == 'armv6l' or platform_machine == 'armv7l'",
 ]
 
 [project.optional-dependencies]

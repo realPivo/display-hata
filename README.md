@@ -11,6 +11,47 @@
 - **Interface:** SPI (SCLK→P11, MOSI→P10, DC→P24, CS→P8/CE0, RST→P25)
 - **Dev mode:** `luma.emulator` with pygame (no physical hardware needed)
 
+## Raspberry Pi OS Configuration
+
+### Enable SPI
+
+The display uses the SPI interface. Enable it before installing the software.
+
+**Non-interactive (one-liner):**
+
+```bash
+sudo raspi-config nonint do_spi 0
+```
+
+**Interactive:** Run `sudo raspi-config`, navigate to **Interface Options → SPI**, select **Yes**, then reboot.
+
+After rebooting, verify SPI is active:
+
+```bash
+ls /dev/spidev0.*
+# Expected: /dev/spidev0.0
+```
+
+## System Dependencies
+
+Install required system packages:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    git \
+    python3-dev \
+    python3-pip \
+    python3-venv \
+    libopenjp2-7 \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libssl-dev \
+    libffi-dev
+```
+
+`spidev` and `RPi.GPIO` are Python packages and will be installed automatically by pip in the next step.
+
 ## Architecture
 
 - **Device layer** — factory that returns either a real `luma.oled.device.sh1106` or a `luma.emulator.device.pygame` device based on environment.
@@ -93,7 +134,14 @@ Example:
 
 ### On the Raspberry Pi (production)
 
-piwheels provides pre-built ARM wheels so Pillow and other compiled packages install in seconds instead of building from source.
+Clone the repository:
+
+```bash
+git clone <repo-url>
+cd display-hata
+```
+
+Create a virtual environment and install dependencies:
 
 ```bash
 python3 -m venv .venv
@@ -101,15 +149,25 @@ source .venv/bin/activate
 pip install --prefer-binary --extra-index-url https://www.piwheels.org/simple -r requirements.txt
 ```
 
-### On a desktop / laptop (development)
+[piwheels](https://www.piwheels.org/) provides pre-built ARM wheels so compiled packages like Pillow install in seconds instead of building from source.
+
+Copy the example config and edit it with your location and settings:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate          # on Windows: .venv\Scripts\activate
-pip install -r requirements-dev.txt
+cp config.example.json config.json
+nano config.json
 ```
 
-`requirements-dev.txt` includes `luma.emulator` (pygame) for the emulator window.
+If you use the `strava` screen, also set up credentials (see [Strava Setup](#strava-setup) below).
+
+### On a desktop / laptop (development)
+
+Uses [uv](https://docs.astral.sh/uv/) for dependency management:
+
+```bash
+uv sync --extra dev   # includes luma.emulator (pygame)
+uv run python main.py --emulator
+```
 
 ## Strava Setup
 
@@ -134,3 +192,54 @@ python main.py --emulator     # run with pygame emulator (dev)
 python main.py --gif out.gif  # record to GIF, Ctrl+C to save (dev)
 python main.py                # run on real SH1106 display (Pi)
 ```
+
+## Running in the Background
+
+Use systemd to run display-hata automatically on boot and keep it running.
+
+### Create the service file
+
+```bash
+sudo nano /etc/systemd/system/display-hata.service
+```
+
+Paste the following, adjusting `WorkingDirectory` and `ExecStart` if you cloned the repo to a different path:
+
+```ini
+[Unit]
+Description=display-hata OLED screen cycler
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/display-hata
+ExecStart=/home/pi/display-hata/.venv/bin/python main.py
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Enable and start
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable display-hata
+sudo systemctl start display-hata
+```
+
+The service will now start automatically on every boot.
+
+### Common commands
+
+| Action    | Command                               |
+| --------- | ------------------------------------- |
+| Start     | `sudo systemctl start display-hata`   |
+| Stop      | `sudo systemctl stop display-hata`    |
+| Restart   | `sudo systemctl restart display-hata` |
+| Status    | `sudo systemctl status display-hata`  |
+| View logs | `journalctl -u display-hata -f`       |
+| Disable   | `sudo systemctl disable display-hata` |
