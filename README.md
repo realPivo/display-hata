@@ -89,6 +89,28 @@ Example:
 }
 ```
 
+## Setup
+
+### On the Raspberry Pi (production)
+
+piwheels provides pre-built ARM wheels so Pillow and other compiled packages install in seconds instead of building from source.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --extra-index-url https://www.piwheels.org/simple -r requirements.txt
+```
+
+### On a desktop / laptop (development)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate          # on Windows: .venv\Scripts\activate
+pip install -r requirements-dev.txt
+```
+
+`requirements-dev.txt` includes `luma.emulator` (pygame) for the emulator window.
+
 ## Strava Setup
 
 The `strava` screen requires OAuth2 credentials. One-time setup:
@@ -98,7 +120,7 @@ The `strava` screen requires OAuth2 credentials. One-time setup:
 3. Run the helper script and follow the prompts:
 
 ```bash
-uv run strava_auth.py
+python strava_auth.py
 ```
 
 4. Copy the output into a `.env` file in the project root (see `.env.example`)
@@ -108,13 +130,7 @@ The app automatically refreshes access tokens (they expire every 6 hours) and ca
 ## Usage
 
 ```bash
-uv sync                              # install dependencies
-uv run main.py --emulator     # run with pygame emulator
-uv run main.py --gif out.gif  # record to GIF (Ctrl+C to save)
-```
-
-On a Raspberry Pi, run without flags to use the real SH1106 display:
-
-```bash
-uv run main.py
+python main.py --emulator     # run with pygame emulator (dev)
+python main.py --gif out.gif  # record to GIF, Ctrl+C to save (dev)
+python main.py                # run on real SH1106 display (Pi)
 ```
