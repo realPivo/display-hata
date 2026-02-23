@@ -1,5 +1,5 @@
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6", "map"],
   "date": {
     "duration": 5
   },
@@ -31,5 +31,8 @@
     "username": "YourBF6Username",
     "platform": "pc",
     "duration": 5
+  },
+  "map": {
+    "duration": 10
   }
 }

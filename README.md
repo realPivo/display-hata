@@ -72,6 +72,7 @@ sudo apt-get install -y \
 | `cpu`         | CPU usage percentage                                 |
 | `strava`      | Cycling distance and goal progress via Strava API    |
 | `bf6`         | Battlefield 6 K/D ratio and kill/death counts        |
+| `map`         | ASCII art map with randomly blinking city dots       |
 
 ## Configuration
 
@@ -91,11 +92,12 @@ cp config.example.json config.json
 | `adsb`        | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50). |
 | `strava`      | object   | `goal_km` (default 1000) and `period` (`ytd`, `all`, or `recent`).           |
 | `bf6`         | object   | `username` — Battlefield 6 player name. `platform` (default `"pc"`).         |
+| `map`         | object   | No required fields. Accepts `duration`.                                       |
 
 Every screen section accepts an optional `duration` (number) — seconds the screen stays visible before cycling to the next one. Defaults to 5.
 
-Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`.
-Screens without config (`date`, `cpu`) don't need a config section.
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`, `map`.
+Screens without config (`date`, `cpu`, `map`) don't need a config section.
 
 Example:
 
