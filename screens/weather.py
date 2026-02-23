@@ -26,13 +26,34 @@ def _fetch_weather(lat: float, lon: float) -> dict | None:
         data = resp.json()["current"]
 
         condition_map = {
-            0: "Clear",
+            0: "Clear sky",
             1: "Mostly clear",
-            2: "Cloudy",
+            2: "Partly cloudy",
             3: "Overcast",
-            61: "Rain",
-            71: "Snow",
-            95: "Storm",
+            45: "Fog",
+            48: "Rime fog",
+            51: "Light drizzle",
+            53: "Drizzle",
+            55: "Heavy drizzle",
+            56: "Frzg drizzle",
+            57: "Hvy Frzg drizz",
+            61: "Light rain",
+            63: "Rain",
+            65: "Heavy rain",
+            66: "Frzg rain",
+            67: "Hvy Frzg rain",
+            71: "Light snow",
+            73: "Snow",
+            75: "Heavy snow",
+            77: "Snow grains",
+            80: "Light showers",
+            81: "Showers",
+            82: "Heavy showers",
+            85: "Snow showers",
+            86: "Hvy Sno Shwrs",
+            95: "Thunderstorm",
+            96: "T-Storm+Hail",
+            99: "T-Storm+Hail",
         }
 
         return {
@@ -51,8 +72,9 @@ class WeatherScreen(Screen):
     def __init__(self, lat: float, lon: float):
         self.lat = lat
         self.lon = lon
-        self.font = load_font("FreePixel.ttf", 16)
-        self.font_sm = load_font("FreePixel.ttf", 12)
+        self.font_lg = load_font("FreePixel.ttf", 28)
+        self.font = load_font("FreePixel.ttf", 18)
+        self.font_sm = load_font("FreePixel.ttf", 14)
         self.weather: dict | None = None
 
     def prefetch(self):
@@ -60,38 +82,27 @@ class WeatherScreen(Screen):
 
     def draw(self, draw, width, height):
         if not self.weather:
-            lines = ["Weather", "N/A"]
+            rows = [("Weather", self.font_sm), ("N/A", self.font_lg)]
         else:
-            temp = self.weather["temp"]
-            feels = self.weather["feels_like"]
-            condition = self.weather["condition"]
-
-            lines = [
-                f"{temp}°C | {condition}",
-                f"Feels {feels}°",
+            rows = [
+                (self.weather["condition"], self.font_sm),
+                (f"{self.weather['temp']}°C", self.font_lg),
+                (f"Feels {self.weather['feels_like']}°", self.font_sm),
             ]
 
-        spacing = 4
-        fonts = []
-        for line in lines:
-            bbox = draw.textbbox((0, 0), line, font=self.font)
-            if bbox[2] - bbox[0] <= width:
-                fonts.append(self.font)
-            else:
-                fonts.append(self.font_sm)
-
-        bboxes = [draw.textbbox((0, 0), line, font=fonts[i]) for i, line in enumerate(lines)]
+        spacing = 6
+        bboxes = [draw.textbbox((0, 0), text, font=font) for text, font in rows]
         heights = [b[3] - b[1] for b in bboxes]
         widths = [b[2] - b[0] for b in bboxes]
 
-        total_h = sum(heights) + spacing * (len(lines) - 1)
+        total_h = sum(heights) + spacing * (len(rows) - 1)
         y = (height - total_h) // 2
 
-        for i, line in enumerate(lines):
+        for i, (text, font) in enumerate(rows):
             draw.text(
                 ((width - widths[i]) // 2, y),
-                line,
+                text,
                 fill="white",
-                font=fonts[i],
+                font=font,
             )
             y += heights[i] + spacing

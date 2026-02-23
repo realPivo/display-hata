@@ -108,7 +108,10 @@ class StravaScreen(Screen):
         self._last_fetch_at: float = 0
 
     def prefetch(self):
-        if self.distance_km is not None and (time.time() - self._last_fetch_at) < _FETCH_INTERVAL:
+        if (
+            self.distance_km is not None
+            and (time.time() - self._last_fetch_at) < _FETCH_INTERVAL
+        ):
             return
         try:
             stats = self.client.get_ride_stats()

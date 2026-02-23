@@ -8,7 +8,7 @@ class DateScreen(Screen):
     live = True
 
     def __init__(self):
-        self.font = load_font("FreePixel.ttf", 16)
+        self.font = load_font("FreePixel.ttf", 20)
 
     def draw(self, draw, width, height):
         now = datetime.now()

@@ -44,7 +44,7 @@ class AdsbScreen(Screen):
         self.lon = lon
         self.dist_nm = int(radius_km * 0.539957)
 
-        self.font = load_font("FreePixel.ttf", 16)
+        self.font = load_font("FreePixel.ttf", 20)
         self.count: int | None = None
 
     def prefetch(self):

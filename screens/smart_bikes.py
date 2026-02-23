@@ -55,7 +55,7 @@ class SmartBikesScreen(Screen):
     name = "smart_bikes"
 
     def __init__(self, station_name: str):
-        self.font = load_font("FreePixel.ttf", 16)
+        self.font = load_font("FreePixel.ttf", 20)
         self.manager = SmartBikeManager()
         self.station_name = station_name
         self.bikes_info = None
