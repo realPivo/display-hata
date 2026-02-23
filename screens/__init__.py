@@ -7,6 +7,7 @@ from screens.cpu import CpuScreen
 from screens.date import DateScreen
 from screens.lan import LanScreen
 from screens.map import MapScreen
+from screens.satellites import SatellitesScreen
 from screens.smart_bikes import SmartBikesScreen
 from screens.strava import StravaScreen
 from screens.weather import WeatherScreen
@@ -25,6 +26,7 @@ _SCREEN_FACTORIES = {
     "lan": lambda cfg: LanScreen(),
     "map": lambda cfg: MapScreen(),
     "strava": lambda cfg: StravaScreen(goal_km=cfg.get("goal_km", 1000), period=cfg.get("period", "ytd")),
+    "satellites": lambda cfg: SatellitesScreen(lat=cfg["lat"], lon=cfg["lon"], min_elevation=cfg.get("min_elevation", 30)),
 }
 
 all_screens = []

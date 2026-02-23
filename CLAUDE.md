@@ -56,6 +56,7 @@ The app follows a **screen-based architecture**:
 | `bf6`         | no     | yes        | Battlefield 6 K/D ratio and kill/death counts (gametools.network API, cached 15 min) |
 | `map`         | yes    | no         | ASCII art map with randomly blinking city dots       |
 | `lan`         | no     | yes        | Active device count on the local /24 subnet (nmap or ARP fallback) |
+| `satellites`  | no     | yes        | ISS overhead indicator + Galileo and Starlink counts via N2YO API (cached 15 min) |
 
 ### Display Coordinates
 
@@ -72,6 +73,8 @@ The app reads `config.json` at startup (see `config.example.json` for reference)
 `current_city` determines the location used by the `weather` and `adsb` screens. `smart_bikes_station` sets which station the `smart_bikes` screen queries.
 
 The `strava` screen reads OAuth2 credentials from a `.env` file (see `.env.example`). Mutable tokens are cached in `.strava_cache.json` (git-ignored). Run `uv run python strava_auth.py` for initial setup.
+
+The `satellites` screen reads `N2YO_API_KEY` from `.env`. Get a free key at n2yo.com/api/. Config fields: `lat`, `lon`, `min_elevation` (degrees, default 30 — only satellites ≥ 30° above the horizon are counted).
 
 ## Development vs Production
 

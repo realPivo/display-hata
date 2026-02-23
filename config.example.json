@@ -1,5 +1,5 @@
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6", "map", "lan"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6", "map", "lan", "satellites"],
   "date": {
     "duration": 5
   },
@@ -37,5 +37,11 @@
   },
   "lan": {
     "duration": 5
+  },
+  "satellites": {
+    "lat": 58.38017374044505,
+    "lon": 26.722616617007585,
+    "min_elevation": 30,
+    "duration": 10
   }
 }

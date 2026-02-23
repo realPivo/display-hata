@@ -75,6 +75,7 @@ sudo apt-get install -y \
 | `bf6`         | Battlefield 6 K/D ratio and kill/death counts        |
 | `map`         | ASCII art map with randomly blinking city dots       |
 | `lan`         | Number of active devices on the local network        |
+| `satellites`  | ISS overhead indicator + Galileo and Starlink counts |
 
 ## Configuration
 
@@ -96,10 +97,11 @@ cp config.example.json config.json
 | `bf6`         | object   | `username` — Battlefield 6 player name. `platform` (default `"pc"`).         |
 | `map`         | object   | No required fields. Accepts `duration`.                                       |
 | `lan`         | object   | No required fields. Accepts `duration`. Requires `nmap` installed on the Pi.  |
+| `satellites`  | object   | `lat`, `lon`, and optional `min_elevation` (degrees, default 30). Requires `N2YO_API_KEY` in `.env`. |
 
 Every screen section accepts an optional `duration` (number) — seconds the screen stays visible before cycling to the next one. Defaults to 5.
 
-Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`, `map`, `lan`.
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`, `map`, `lan`, `satellites`.
 Screens without config (`date`, `cpu`, `map`, `lan`) don't need a config section.
 
 Example:
@@ -196,6 +198,32 @@ python strava_auth.py
 4. Copy the output into a `.env` file in the project root (see `.env.example`)
 
 The app automatically refreshes access tokens (they expire every 6 hours) and caches them in `.strava_cache.json`. Both `.env` and `.strava_cache.json` are git-ignored.
+
+## Satellites Setup
+
+The `satellites` screen requires a free N2YO API key:
+
+1. Register at https://www.n2yo.com/api/ (free, no credit card)
+2. Copy your API key and add it to your `.env` file:
+
+```
+N2YO_API_KEY=your_key_here
+```
+
+The screen shows:
+- **ISS above!** — only when the ISS is currently overhead (omitted otherwise)
+- **N Galileo** — Galileo (EU navigation) satellites above the elevation threshold
+- **N Starlink** — Starlink satellites above the elevation threshold
+
+The `min_elevation` config field (default `30`) controls the minimum elevation angle in degrees. Only satellites above this angle are counted — higher values reduce noise from satellites near the horizon.
+
+| `min_elevation` | What is counted |
+| --- | --- |
+| `0` | Entire visible sky (horizon to zenith) |
+| `30` | Satellites ≥ 30° above horizon (default) |
+| `45` | High in the sky only |
+
+Data is cached for 15 minutes to stay well within the free tier limit (1,000 requests/hour).
 
 ## Usage
 
