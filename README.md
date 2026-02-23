@@ -71,6 +71,7 @@ sudo apt-get install -y \
 | `adsb`        | Aircraft count within 50 km via adsb.lol / adsb.fi   |
 | `cpu`         | CPU usage percentage                                 |
 | `strava`      | Cycling distance and goal progress via Strava API    |
+| `bf6`         | Battlefield 6 K/D ratio and kill/death counts        |
 
 ## Configuration
 
@@ -89,10 +90,11 @@ cp config.example.json config.json
 | `smart_bikes` | object   | `station` — Tartu Smart Bike station name.                                   |
 | `adsb`        | object   | `city` (display label), `lat`, `lon`, and optional `radius_km` (default 50). |
 | `strava`      | object   | `goal_km` (default 1000) and `period` (`ytd`, `all`, or `recent`).           |
+| `bf6`         | object   | `username` — Battlefield 6 player name. `platform` (default `"pc"`).         |
 
 Every screen section accepts an optional `duration` (number) — seconds the screen stays visible before cycling to the next one. Defaults to 5.
 
-Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`.
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`.
 Screens without config (`date`, `cpu`) don't need a config section.
 
 Example:
@@ -125,6 +127,11 @@ Example:
   "strava": {
     "goal_km": 1000,
     "period": "ytd",
+    "duration": 5
+  },
+  "bf6": {
+    "username": "YourBF6Username",
+    "platform": "pc",
     "duration": 5
   }
 }

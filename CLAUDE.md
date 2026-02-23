@@ -53,6 +53,7 @@ The app follows a **screen-based architecture**:
 | `adsb`        | no     | yes        | Aircraft count within 50 km via adsb.lol / adsb.fi   |
 | `cpu`         | no     | no         | CPU usage percentage                                 |
 | `strava`      | no     | yes        | Cycling distance and goal progress via Strava API    |
+| `bf6`         | no     | yes        | Battlefield 6 K/D ratio and kill/death counts (gametools.network API, cached 15 min) |
 
 ### Display Coordinates
 

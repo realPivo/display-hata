@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from screens.adsb import AdsbScreen
+from screens.bf6 import Bf6Screen
 from screens.cpu import CpuScreen
 from screens.date import DateScreen
 from screens.smart_bikes import SmartBikesScreen
@@ -13,6 +14,7 @@ with open(_config_path) as f:
     _config = json.load(f)
 
 _SCREEN_FACTORIES = {
+    "bf6": lambda cfg: Bf6Screen(username=cfg["username"], platform=cfg.get("platform", "pc")),
     "date": lambda cfg: DateScreen(),
     "weather": lambda cfg: WeatherScreen(lat=cfg["lat"], lon=cfg["lon"]),
     "smart_bikes": lambda cfg: SmartBikesScreen(cfg["station"]),

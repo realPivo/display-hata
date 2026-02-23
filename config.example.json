@@ -1,5 +1,5 @@
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6"],
   "date": {
     "duration": 5
   },
@@ -25,6 +25,11 @@
   "strava": {
     "goal_km": 1000,
     "period": "ytd",
+    "duration": 5
+  },
+  "bf6": {
+    "username": "YourBF6Username",
+    "platform": "pc",
     "duration": 5
   }
 }

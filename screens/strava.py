@@ -7,6 +7,8 @@ from dotenv import dotenv_values
 
 from screens.base import Screen, load_font
 
+_FETCH_INTERVAL = 300  # seconds (5 minutes)
+
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 _CACHE_PATH = _PROJECT_ROOT / ".strava_cache.json"
 _ENV_PATH = _PROJECT_ROOT / ".env"
@@ -106,7 +108,7 @@ class StravaScreen(Screen):
         self._last_fetch_at: float = 0
 
     def prefetch(self):
-        if self.distance_km is not None and (time.time() - self._last_fetch_at) < 300:
+        if self.distance_km is not None and (time.time() - self._last_fetch_at) < _FETCH_INTERVAL:
             return
         try:
             stats = self.client.get_ride_stats()
