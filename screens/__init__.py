@@ -5,6 +5,7 @@ from screens.adsb import AdsbScreen
 from screens.bf6 import Bf6Screen
 from screens.cpu import CpuScreen
 from screens.date import DateScreen
+from screens.lan import LanScreen
 from screens.map import MapScreen
 from screens.smart_bikes import SmartBikesScreen
 from screens.strava import StravaScreen
@@ -21,6 +22,7 @@ _SCREEN_FACTORIES = {
     "smart_bikes": lambda cfg: SmartBikesScreen(cfg["station"]),
     "adsb": lambda cfg: AdsbScreen(city=cfg["city"], lat=cfg["lat"], lon=cfg["lon"], radius_km=cfg.get("radius_km", 50)),
     "cpu": lambda cfg: CpuScreen(),
+    "lan": lambda cfg: LanScreen(),
     "map": lambda cfg: MapScreen(),
     "strava": lambda cfg: StravaScreen(goal_km=cfg.get("goal_km", 1000), period=cfg.get("period", "ytd")),
 }

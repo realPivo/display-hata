@@ -47,7 +47,8 @@ sudo apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libssl-dev \
-    libffi-dev
+    libffi-dev \
+    nmap
 ```
 
 `spidev` and `RPi.GPIO` are Python packages and will be installed automatically by pip in the next step.
@@ -73,6 +74,7 @@ sudo apt-get install -y \
 | `strava`      | Cycling distance and goal progress via Strava API    |
 | `bf6`         | Battlefield 6 K/D ratio and kill/death counts        |
 | `map`         | ASCII art map with randomly blinking city dots       |
+| `lan`         | Number of active devices on the local network        |
 
 ## Configuration
 
@@ -93,11 +95,12 @@ cp config.example.json config.json
 | `strava`      | object   | `goal_km` (default 1000) and `period` (`ytd`, `all`, or `recent`).           |
 | `bf6`         | object   | `username` — Battlefield 6 player name. `platform` (default `"pc"`).         |
 | `map`         | object   | No required fields. Accepts `duration`.                                       |
+| `lan`         | object   | No required fields. Accepts `duration`. Requires `nmap` installed on the Pi.  |
 
 Every screen section accepts an optional `duration` (number) — seconds the screen stays visible before cycling to the next one. Defaults to 5.
 
-Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`, `map`.
-Screens without config (`date`, `cpu`, `map`) don't need a config section.
+Valid screen names: `date`, `weather`, `smart_bikes`, `adsb`, `cpu`, `strava`, `bf6`, `map`, `lan`.
+Screens without config (`date`, `cpu`, `map`, `lan`) don't need a config section.
 
 Example:
 

@@ -1,5 +1,5 @@
 {
-  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6", "map"],
+  "screens": ["date", "weather", "smart_bikes", "adsb", "cpu", "strava", "bf6", "map", "lan"],
   "date": {
     "duration": 5
   },
@@ -34,5 +34,8 @@
   },
   "map": {
     "duration": 10
+  },
+  "lan": {
+    "duration": 5
   }
 }

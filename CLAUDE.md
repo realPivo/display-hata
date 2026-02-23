@@ -55,6 +55,7 @@ The app follows a **screen-based architecture**:
 | `strava`      | no     | yes        | Cycling distance and goal progress via Strava API    |
 | `bf6`         | no     | yes        | Battlefield 6 K/D ratio and kill/death counts (gametools.network API, cached 15 min) |
 | `map`         | yes    | no         | ASCII art map with randomly blinking city dots       |
+| `lan`         | no     | yes        | Active device count on the local /24 subnet (nmap or ARP fallback) |
 
 ### Display Coordinates
 
